@@ -27,9 +27,6 @@ COPY --from=build /go/src/app/app /go/bin/app
 COPY --from=build /go/src/app/public /go/bin/public
 ENV ENVIRONMENT=DOCKER
 
-# Expose the application port
-EXPOSE 8080
-
 # Set the entrypoint to the built binary
 ENTRYPOINT ["/go/bin/app"]
 

@@ -2,21 +2,26 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/arisaksen/api1/author"
 	"github.com/labstack/echo/v4"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
-type Book struct {
-	Name   string        `json:"name"`
-	Author author.Author `json:"author"`
-	Year   int           `json:"year"`
+type Author struct {
+	Name        string `json:"name" xml:"name" form:"name" query:"name"`
+	YearOfBirth int    `json:"year-of-birth" xml:"year-of-birth" form:"year-of-birth" query:"year-of-birth"`
 }
 
-func GetBooks(authors []author.Author) ([]Book, error) {
+type Book struct {
+	Name   string `json:"name"`
+	Author Author `json:"author"`
+	Year   int    `json:"year"`
+}
+
+func GetBooks(authors []Author) ([]Book, error) {
 	books := []Book{
 		Book{Name: "The Hobbit", Author: authors[0], Year: 1937},
 		Book{Name: "The Da Vinci Code", Author: authors[1], Year: 2003},
@@ -26,8 +31,15 @@ func GetBooks(authors []author.Author) ([]Book, error) {
 	return books, nil
 }
 
-func GetAuthors() ([]author.Author, error) {
-	response, err := http.Get("http://localhost:8080/api/author")
+func GetAuthors() ([]Author, error) {
+	var url string
+	runEnv := os.Getenv("ENVIRONMENT")
+	if runEnv == "DOCKER" {
+		url = "http://api1-svc:8080/api/author"
+	} else {
+		url = "http://localhost:8080/api/author"
+	}
+	response, err := http.Get(url)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -35,7 +47,7 @@ func GetAuthors() ([]author.Author, error) {
 	if err != nil {
 		panic(err.Error())
 	}
-	var authors []author.Author
+	var authors []Author
 	err = json.Unmarshal(body, &authors)
 	if err != nil {
 		return nil, err
@@ -58,10 +70,16 @@ func handleGetBook(c echo.Context) error {
 	return response
 }
 
+func handleGet(c echo.Context) error {
+	testAuthor := Author{Name: "test", YearOfBirth: 123}
+	return c.JSON(http.StatusOK, testAuthor)
+}
+
 func main() {
 	e := echo.New()
 	e.Use(responseTimeLogger)
 	e.GET("/api/book", handleGetBook)
+	e.GET("", handleGet)
 	e.Logger.Fatal(e.Start(":8081"))
 }
 

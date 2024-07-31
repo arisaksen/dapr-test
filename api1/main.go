@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/arisaksen/api1/author"
-	"github.com/arisaksen/api1/renderer"
+	"github.com/arisaksen/dapr-test/api1/author"
+	"github.com/arisaksen/dapr-test/api1/renderer"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"os"

@@ -1,4 +1,4 @@
-module github.com/arisaksen/api1
+module github.com/arisaksen/dapr-test/api1
 
 go 1.22.4
 

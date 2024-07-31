@@ -1,9 +1,8 @@
-module github.com/arisaksen/api2
+module github.com/arisaksen/dapr-test/api2
 
 go 1.22.4
 
 require github.com/labstack/echo/v4 v4.12.0
-replace api1 => ../api1
 
 require (
 	github.com/labstack/gommon v0.4.2 // indirect
