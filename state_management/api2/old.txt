@@ -35,7 +35,7 @@ func GetAuthors() ([]Author, error) {
 	var url string
 	runEnv := os.Getenv("ENVIRONMENT")
 	if runEnv == "DOCKER" {
-		url = "http://api1-svc:8080/api/author"
+		url = "hapi1-svc:8080/api/author"
 	} else {
 		url = "http://localhost:8080/api/author"
 	}
