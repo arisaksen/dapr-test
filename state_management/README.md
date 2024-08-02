@@ -1,19 +1,5 @@
 # Dapr setup
-
-```bash
-dapr init
-dapr --version
-docker ps
-```
-On dapr init, the CLI also creates a default components folder that contains several YAML files with definitions for a state store, Pub/sub, and Zipkin. The Dapr sidecar will read these components and use:
-
-The Redis container for state management and messaging.
-The Zipkin container for collecting traces.
-
-## User Dapr API
-```bash
-dapr run --app-id myapp --dapr-http-port 3500
-```
+README in repo root
 
 ### Test with curl
 ```bash
@@ -28,24 +14,12 @@ docker exec -it dapr_redis redis-cli
 keys *
 ```
 
-# Docker
-
+## User Dapr API
+Launch a Dapr sidecar that will listen on port 3500 for a blank application named `myapp`:
 ```bash
-cd api1
-docker run -p 8080:8080 -it $(docker build -q .)
-
-cd api2
-docker run -p 8081:8081 -it $(docker build -q .)
+dapr run --app-id myapp --dapr-http-port 3500
+dapr list
+dapr stop --app-id myapp
 ```
 
-# kubernetes portforward to localhost
-
-```bash
-kubectl config get-contexts
-kubectl config use-context <context_name>
-
-kubectl port-forward <deployment_name> --address 0.0.0.0 8080:8080
-```
-
-# Source Dapr Docs
-https://docs.dapr.io/getting-started/get-started-api/
+Since no custom component folder was defined with the above command, Dapr uses the default component definitions created during the dapr init flow.
