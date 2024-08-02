@@ -10,3 +10,14 @@ spec:
       value: localhost:6379
     - name: redisPassword
       value: ""
+
+#apiVersion: dapr.io/v1alpha1
+#kind: Component
+#metadata:
+#  name: orderpubsub
+#spec:
+#  type: pubsub.rabbitmq
+#  version: v1
+#  metadata:
+#    - name: connectionString
+#      value: "amqp://localhost:5672"
