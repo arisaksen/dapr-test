@@ -10,3 +10,8 @@ On dapr init, the CLI also creates a default components folder that contains sev
 The Redis container for state management and messaging.
 The Zipkin container for collecting traces.
 
+# Dapr cleanup
+To remove dapr, zipkin and redis container run command:
+```sh
+dapr uninstall --all
+```
