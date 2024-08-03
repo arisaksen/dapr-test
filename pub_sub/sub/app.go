@@ -12,7 +12,7 @@ import (
 
 var (
 	sub = &common.Subscription{
-		PubsubName: "orderpubsub",
+		PubsubName: "pubsub",
 		Topic:      "orders",
 		Route:      "/orders",
 	}

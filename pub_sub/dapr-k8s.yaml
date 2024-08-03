@@ -1,0 +1,10 @@
+version: 1
+apps:
+  - appID: pub
+    appDirPath: ./pub
+    containerImage: pub-image:latest
+  - appID: sub
+    appDirPath: ./sub
+    appPort: 6005
+    containerImage: sub-image:latest
+    createService: true

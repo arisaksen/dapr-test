@@ -14,4 +14,5 @@ The Zipkin container for collecting traces.
 To remove dapr, zipkin and redis container run command:
 ```sh
 dapr uninstall --all
+dapr uninstall -k --dev
 ```

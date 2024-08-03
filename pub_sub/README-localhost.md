@@ -1,4 +1,4 @@
-# Dapr setup
+# Dapr setup localhost
 
 README in repo root
 
@@ -10,7 +10,7 @@ README in repo root
 run with dapr:
 
 ```sh
-dapr run -f .
+dapr run -f dapr-localhost.yaml
 ```
 
 no need run init dapr app beforehand like in `state_management`.
@@ -46,17 +46,18 @@ XRANGE orders - +
 
 ## Use RabbitMQ
 
-Create docker container
+Comment out radis and comment inn rabbitMq in the `localhostComponents/pubsub.yml` folder the run dapr.
+
+Create docker container:
 
 ```sh
-docker run -d -it --rm --name dapr_rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management 
+docker run -it --rm --name dapr_rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management 
 ```
 
 http://localhost:15672
-
-Comment out radis and inn rabbitMq in the localhostComponents folder the run dapr.
+Username: guest, Password: guest
 
 ```sh
 cd pub_sub
-dapr run -f .
+dapr run -f dapr-localhost.yaml
 ```
