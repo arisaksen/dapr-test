@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pub
+  namespace: default
+spec:
+  ttlSecondsAfterFinished: 30
+  template:
+    metadata:
+      annotations:
+        dapr.io/app-id: pub
+        dapr.io/config: appconfig
+        dapr.io/enabled: "true"
+        dapr.io/metrics-port: "65424"
+        dapr.io/unix-domain-socket-path: ""
+      labels:
+        app: pub
+    spec:
+      containers:
+        - name: pub
+          image: pub-image:latest
+          imagePullPolicy: Never
+          env:
+            - name: APP_ID
+              value: pub
+            - name: APP_CHANNEL_ADDRESS
+            - name: DAPR_METRICS_PORT
+              value: "65424"
+      restartPolicy: Never
+  backoffLimit: 4
