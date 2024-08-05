@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sub
+  namespace: default
+spec:
+#  replicas: 1        # this is set by the sub_scaler.yaml
+  selector:
+    matchLabels:
+      app: sub
+  strategy: { }
+  template:
+    metadata:
+      annotations:
+        dapr.io/app-id: sub
+        dapr.io/app-port: "6005"
+        dapr.io/config: appconfig
+        dapr.io/enabled: "true"
+        dapr.io/metrics-port: "59135"
+        dapr.io/unix-domain-socket-path: ""
+      labels:
+        app: sub
+    spec:
+      containers:
+        - env:
+            - name: APP_ID
+              value: sub
+            - name: APP_CHANNEL_ADDRESS
+            - name: APP_PORT
+              value: "6005"
+            - name: DAPR_METRICS_PORT
+              value: "59135"
+          image: sub-image:latest
+          imagePullPolicy: Never
+          name: sub
+          ports:
+            - containerPort: 6005
+          resources: { }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sub
+  name: sub
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 6005
+  selector:
+    app: sub
+  type: LoadBalancer
+#---
+#apiVersion: keda.sh/v1alpha1
+#kind: ScaledObject
+#metadata:
+#  name: sub
+#  namespace: default
+#spec:
+#  scaleTargetRef:
+#    name: sub
+#  pollingInterval: 5 # Optional. Default: 30 seconds
+#  cooldownPeriod: 30 # Optional. Default: 300 seconds. After 30 seconds of no events the replicas will be scaled down (cooldown period).
+#  maxReplicaCount: 30 # Optional. Default: 100
+#  triggers:
+#    - type: redis
+#      metadata:
+#        queueName: pubsub
+#        queueLength: "5"
+#      authenticationRef:
+#        name: rabbitmq-consumer-trigger
+#---
+#apiVersion: keda.sh/v1alpha1
+#kind: TriggerAuthentication
+#metadata:
+#  name: rabbitmq-consumer-trigger
+#  namespace: default
+#spec:
+#  secretTargetRef:
+#    - parameter: host
+#      name: rabbitmq-consumer-secret
+#      key: RabbitMqHost
+#---
+#

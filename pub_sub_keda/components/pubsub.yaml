@@ -1,0 +1,31 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+    # amqp://<username>:<password>@dapr-dev-rabitmq:5672 'kubectl get secret --namespace default dapr-dev-rabbitmq -o jsonpath="{.data.rabbitmq-password}" | base64 -d' remember to not include '%' at the end of the response!
+    #    - name: connectionString
+    #      value: "amqp://user:SfFrmpIGLVVp54Ju@dapr-dev-rabbitmq.default:5672"
+    - name: protocol
+      value: amqp
+    - name: hostname
+      value: "dapr-dev-rabbitmq.default:5672"
+    - name: username
+      value: "user"
+    - name: password
+      secretKeyRef:
+        name: dapr-dev-rabbitmq
+        key: rabbitmq-password
+    - name: durable
+      value: "true"         # when durable=false the queue disappears when the app 'sub' scales down.
+    - name: deletedWhenUnused
+      value: "false"        # the KEDA autoscaler will have problems finding the queue when the app scales to '0'.
+    - name: concurrencyMode
+      value: single
+
+# kubectl port-forward svc/dapr-dev-rabbitmq 15672:15672
+# then test login in web for http://localhost:15672
+
