@@ -26,7 +26,26 @@ spec:
         activationValue: "11"       # Target value for activating the scaler. Learn more about activation here.(Default: 0, Optional, This value can be a float)
         # Example: if activationValue: "11" and message backlog size is 10. The replicaCount will still be 0.
 
-# Troubleshoot
-# kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
-# nslookup dapr-dev-rabbitmq.default.svc.cluster.local
-# ping dapr-dev-rabbitmq.default.svc.cluster.local
+  # Troubleshoot
+  # kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
+  # nslookup dapr-dev-rabbitmq.default.svc.cluster.local
+  # ping dapr-dev-rabbitmq.default.svc.cluster.local
+
+  # azure-servicebus
+#  triggers:
+#    - type: azure-servicebus
+#      metadata:
+#        # Required: queueName OR topicName and subscriptionName
+#        queueName: functions-sbqueue
+#        # or
+#        topicName: functions-sbtopic
+#        subscriptionName: sbtopic-sub1
+#        # Optional, required when pod identity is used
+#        namespace: service-bus-namespace
+#        # Optional, can use TriggerAuthentication as well
+#        connectionFromEnv: SERVICEBUS_CONNECTIONSTRING_ENV_NAME
+#        # Optional
+#        messageCount: "5" # Optional. Count of messages to trigger scaling on. Default: 5 messages
+#        activationMessageCount: "2"
+#        cloud: Private # Optional. Default: AzurePublicCloud
+#        endpointSuffix: servicebus.airgap.example # Required when cloud=Private
