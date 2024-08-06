@@ -51,6 +51,7 @@ kubectl apply -f sub/.dapr/deploy/.; kubectl apply -f pub/.dapr/deploy/.
 ```sh
 kubectl logs --tail=10 <sub pod name>
 ```
+
 or just view it in something like `k9s`.
 
 ### List dapr apps
@@ -63,3 +64,12 @@ dapr list -k
 
 dapr stop -k -f dapr-k8s.yaml
 dapr uninstall -k --dev
+
+Remove persistent volumes:
+
+```sh
+kubectl get pv
+kubectl delete pv <PV-NAME>
+kubectl delete pv <PV-NAME>
+kubectl delete pv <PV-NAME>
+```
