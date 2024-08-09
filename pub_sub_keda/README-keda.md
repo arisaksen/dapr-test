@@ -18,11 +18,16 @@ Instead of running the subscription app continuously. We will now start a `sub` 
 
 ```sh
 dapr init -k --dev --wait
+dapr init -k --wait
 ```
 
-* Rabbitmq:
+`dapr init -k --dev --wait` for zipkin and redis.
+
+* Uninstall Radis, remove components and Install Rabbitmq:
 
 ```sh
+helm uninstall dapr-dev-redis
+kubectl delete component statestore
 helm install dapr-dev bitnami/rabbitmq --set auth.tls.enabled=false --wait
 ```
 
