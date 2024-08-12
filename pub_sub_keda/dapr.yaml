@@ -1,0 +1,12 @@
+version: 1
+common:
+  resourcesPath: ./components
+apps:
+#  - appID: pub
+#    appDirPath: ./pub
+#    containerImage: localhost:6000/pub-image:latest
+  - appID: sub
+    appDirPath: ./sub
+    appPort: 6005
+    containerImage: localhost:6000/sub-image:latest
+    createService: true

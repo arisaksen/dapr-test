@@ -1,0 +1,55 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"strconv"
+	"time"
+
+	dapr "github.com/dapr/go-sdk/client"
+)
+
+const (
+	pubsubComponentName = "pubsub"
+	pubsubTopic         = "orders"
+)
+
+var (
+	publisherClient dapr.Client
+)
+
+func init() {
+	// Create a new client for Dapr using the SDK
+	var err error
+	publisherClient, err = dapr.NewClient()
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+func main() {
+
+	c := context.Background()
+
+	var orderId int
+	for {
+		// Publish events using Dapr pubsub
+		for i := 1; i <= 10; i++ {
+			orderId++
+			order := `{"orderId":` + strconv.Itoa(orderId) + `}`
+
+			err := publisherClient.PublishEvent(c, pubsubComponentName, pubsubTopic, []byte(order))
+			if err != nil {
+				panic(err)
+			}
+			fmt.Println("Published data:", order)
+
+			time.Sleep(time.Second)
+		}
+
+		// Wait before publish again
+		time.Sleep(10 * time.Second)
+	}
+
+}
